@@ -1,4 +1,4 @@
-import './App.css';
+import './App.css'
 import Favorites from './components/Favorites';
 import Meals from './components/Meals';
 import Modal from './components/Modal';
