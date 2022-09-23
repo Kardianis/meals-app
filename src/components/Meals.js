@@ -1,10 +1,33 @@
 import { useGlobalContext } from "../context";
+import {BsHandThumbsUp} from 'react-icons/bs'
 
 const Meals = () => {
-    const context = useGlobalContext()
-    console.log(context)
+    const {meals, loading} = useGlobalContext()
+
+    if(loading){
+        return <section className="section">
+            <h4> Loading...</h4>
+        </section>
+    }
+    if(meals.length < 1){
+        return <section className="section">
+        <h4>No meals matched to your search therm. Please try again</h4>
+        </section>
+    }
+
     return (
-        <h1>Meals Component</h1>
+        <section className="section-center">
+            {meals.map((singleMeal) => {
+                const {idMeal, strMeal:title, strMealThumb:image} = singleMeal
+                return <article key={idMeal} className="single-meal">
+                    <img src={image} className="img" alt="meal" />
+                    <footer>
+                        <h5>{title}</h5>
+                        <button className="like-btn"><BsHandThumbsUp/></button>
+                    </footer>
+                </article>
+            })}
+        </section>
     )
 }
 
