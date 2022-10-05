@@ -5,6 +5,16 @@ const AppContext = React.createContext()
 
 const allMealsURL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=a'
 const randomMealURL ='https://www.themealdb.com/api/json/v1/1/random.php'
+const getFavoritesFromLocalStorage = () =>{
+    let favorites = localStorage.getItem('favorites');
+    if(favorites){
+        favorites = JSON.parse(localStorage.getItem('favorites'))
+    }
+    else{
+        favorites =[]
+    }
+    return favorites
+}
 
 const AppProvider = ({children}) => {
 
@@ -13,7 +23,7 @@ const AppProvider = ({children}) => {
     const [searchTerm, setSearchTerm] = useState('')
     const [selectedMeal, setSelectedMeal] = useState(null)
     const [showModal, setShowModal] = useState(false)
-    const [favorites, setFavorites] = useState([])
+    const [favorites, setFavorites] = useState(getFavoritesFromLocalStorage())
 
     const fetchMeals = async (url) => {
         setLoading(true)
@@ -64,6 +74,7 @@ const AppProvider = ({children}) => {
         const meal = meals.find((meal) => meal.idMeal === idMeal)
         const updatedFavorites = [...favorites, meal];
         setFavorites(updatedFavorites) 
+        localStorage.setItem('favorites',JSON.stringify(updatedFavorites))
     }
 
     const removeFromFavorites = (idMeal) =>{
